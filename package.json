@@ -1,11 +1,12 @@
 {
-  "type": "module",
+  "type": "commonjs",
   "name": "mono-get-institution",
   "version": "1.0.0",
   "main": "app.js",
   "license": "MIT",
   "author": "Adavize Hassan",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "4.17.1",
     "node-fetch": "2.6.6"
   },
