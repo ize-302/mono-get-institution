@@ -7,10 +7,9 @@
   "author": "Adavize Hassan",
   "dependencies": {
     "dotenv": "^16.0.1",
-    "express": "4.17.1",
-    "node-fetch": "2.6.6"
+    "fastify": "^4.17.0",
+    "node-fetch": "^2.6.11"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node app.js"
   },
