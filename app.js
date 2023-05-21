@@ -1,31 +1,32 @@
 require('dotenv').config();
-const express = require("express");
-const app = express();
+const fastify = require('fastify')({ logger: true })
 const fetch = require('node-fetch')
 
-const {PORT} = process.env
+const { PORT } = process.env
 
-app.use(express.json());
-
-// api route
-app.use("/v1/institutions/:id", (req, res) => {
+fastify.get('/v1/institutions/:id', (req, res) => {
+  const { id } = req.params;
   fetch('https://api.withmono.com/v1/institutions')
     .then((response) => response.json())
     .then((data) => {
-      const found_institution = data.find((institution) => {
-        return institution.bank_code === req.params.id
-      })
-      if (!found_institution) return res.status(404).send({message: 'not found'})
+      const found_institution = data.find((institution) => institution.bank_code === id)
+      if (!found_institution) return res.status(404).send({ message: 'not found' })
       res.send(found_institution)
     })
     .catch((err) => console.error(err));
-});
+})
 
-// invalid route
-app.all("*", (req, res) => {
+fastify.get('*', function (_req, res) {
   res.status(404).send("Please use /v1/institutions/BANK_CODE");
-});
+})
 
-app.listen(PORT, () => {
-  return console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
-});
+const start = async () => {
+  try {
+    await fastify.listen({ port: PORT })
+  } catch (error) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+
+start()
